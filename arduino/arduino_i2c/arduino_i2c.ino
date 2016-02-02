@@ -5,8 +5,8 @@
 #endif
 
 //paramators
-#define len 16
-#define deviceAddress 8
+#define LEN 16
+#define DEVADD 8
 #define DELAY 500  //interval of data connection.
 
 //プロトタイプ宣言
@@ -14,9 +14,10 @@ void requestEvent();
 char getLevel(uint8_t volume);
 char getLevelButton(uint8_t volume);
 void check();
+void printButton();
 
 int i; 
-uint8_t TX_data[len]="000000000000000";
+uint8_t TX_data[LEN]="000000000000000";
 
 
 
@@ -172,8 +173,10 @@ void loop() {
 
 void check(){
   int i = 0;
-  Serial.println();
-  while(i<=8){
+
+  printButton();
+  
+  while(i<LEN-1){
     //アスキーコードで'0'が48なので，48を引く
     Serial.print(TX_data[i]-48);
     i++;
@@ -184,7 +187,7 @@ void check(){
 
 void requestEvent()
 {
-  //Wire.beginTransmission(deviceAddress);
+  //Wire.beginTransmission(DEVADD);
   Wire.write(TX_data, 16);
   Serial.println("Call");
   //Wire.endTransmission();
@@ -243,5 +246,11 @@ char getLevelButton(uint8_t volume){
   
   return output;
 }
+
+void printButton(){
+  Serial.println();
+  Serial.println("ox34lbtrRL");
+}
+
 
 
