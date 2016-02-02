@@ -9,15 +9,16 @@
 #define deviceAddress 8
 #define DELAY 500  //interval of data connection.
 
+//プロトタイプ宣言
+void requestEvent();
 char getLevel(uint8_t volume);
 char getLevelButton(uint8_t volume);
-
+void check();
 
 int i; 
 uint8_t TX_data[len]="000000000000000";
 
-//プロトタイプ宣言
-void requestEvent();
+
 
 USB Usb;
 PS3USB PS3(&Usb);
@@ -165,8 +166,21 @@ void loop() {
      }*/
 
   //AnalogControlについてはまた別に書く必要あり
+  check();
 
 }
+
+void check(){
+  int i = 0;
+  Serial.println();
+  while(i<=8){
+    //アスキーコードで'0'が48なので，48を引く
+    Serial.print(TX_data[i]-48);
+    i++;
+  }
+  delay(500);
+}
+
 
 void requestEvent()
 {
@@ -229,4 +243,5 @@ char getLevelButton(uint8_t volume){
   
   return output;
 }
+
 
