@@ -21,8 +21,8 @@ char buf = '0';
 PwmOut servo1(PA_0);
 int i = 0;
 
-PwmOut motor1(PC_0);
-PwmOut motor1_inv(PC_1);
+PwmOut motor1(PC_7);
+PwmOut motor1_inv(PA_9);
 
 //配列でパルス幅を管理
 
@@ -57,7 +57,8 @@ void init();
 
 
 int main() {
-
+    motor1.period_us(50);
+    motor1_inv.period_us(50);
     while(1){
       press_button();
       wait_ms(50);
@@ -69,14 +70,22 @@ int main() {
 
 void motor(){
   printf("モーターを動かします\r\n");
-  motor1 = 1;
-  motor1_inv = 0;
-  wait(2);
-  motor1_inv = 1;
-  motor1 = 0;
-  wait(2);
-  motor1_inv = 0;
-  motor1 = 0;
+
+  //RS-540は10Vくらいかけないと動かない...
+  motor1_inv = 0.9f;
+  motor1 = 0.0f;
+  wait(5);
+  motor1_inv = 0.0f;
+  motor1 = 0.0f;
+  wait(1);
+  motor1 = 0.9f;
+  motor1_inv = 0.0f;
+  wait(5);
+  motor1_inv = 0.0f;
+  motor1 = 0.0f;
+  wait(1);
+
+  printf("モータ動かし終わりました\r\n");
 }
 
 
@@ -181,7 +190,7 @@ void servo_back_test(){
 
 
 void init(){
-  pc.printf("初期位置に戻します\n");
+  pc.printf("初期位置に戻します\r\n");
   servo_pulses[0] = 1500;
   servo1.pulsewidth_us(servo_pulses[0]);
 }
