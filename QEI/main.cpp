@@ -21,13 +21,14 @@ char buf = '0';
 PwmOut servo1(PA_0);
 int i = 0;
 
-DigitalOut motor1(PC_0);
+PwmOut motor1(PC_0);
+PwmOut motor1_inv(PC_1);
 
 //配列でパルス幅を管理
 
 int servo_pulses[10] = {1500,1500,1500,1500,1500,1500,1500};
 //servo_pulses[0] = 700;
-
+int motor_pulses[10] = {0,0,0,0,0,0,0,0,0,0};
 
 
 //プロトタイプ宣言
@@ -66,11 +67,16 @@ int main() {
 
 
 
-void motor(DigitalOut motor){
+void motor(){
   printf("モーターを動かします\r\n");
-  motor = 1;
-  wait(1);
-  motor = 0;
+  motor1 = 1;
+  motor1_inv = 0;
+  wait(2);
+  motor1_inv = 1;
+  motor1 = 0;
+  wait(2);
+  motor1_inv = 0;
+  motor1 = 0;
 }
 
 
@@ -91,6 +97,7 @@ void cross(){
 
 void square(){
   pc.printf("四角ボタンが押されています．\r\n");
+  motor();
 }
 
 void up(){
