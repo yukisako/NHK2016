@@ -181,7 +181,7 @@ void check(){
     Serial.print(TX_data[i]-48);
     i++;
   }
-  delay(500);
+  delay(50);
 }
 
 
@@ -249,7 +249,7 @@ char getLevelButton(uint8_t volume){
 
 void printButton(){
   Serial.println();
-  Serial.println("ox34lbtrRL");
+  Serial.println("ox34rbtlRL");
 }
 
 

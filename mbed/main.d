@@ -81,7 +81,8 @@ main.o: main.cpp mbed/mbed.h mbed/platform.h \
  mbed/ticker_api.h mbed/Ticker.h mbed/TimerEvent.h mbed/us_ticker_api.h \
  mbed/Timeout.h mbed/LowPowerTimeout.h mbed/LowPowerTicker.h \
  mbed/LowPowerTimer.h mbed/LocalFileSystem.h mbed/InterruptIn.h \
- mbed/gpio_irq_api.h mbed/wait_api.h mbed/sleep_api.h mbed/rtc_time.h
+ mbed/gpio_irq_api.h mbed/wait_api.h mbed/sleep_api.h mbed/rtc_time.h \
+ QEI.h
 
 mbed/mbed.h:
 
@@ -334,3 +335,5 @@ mbed/wait_api.h:
 mbed/sleep_api.h:
 
 mbed/rtc_time.h:
+
+QEI.h:
