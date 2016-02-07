@@ -15,14 +15,16 @@ QEI wheel (PA_1, PA_4, NC, 500);
 I2CSlave i2c( PB_3 , PB_10 );  //通信用のピン設定(SCA,SCL)
 
 const int addr = 0x70;
-char data[16] = "yyyyyyyyyyyyyyy";
+char data = 'z';
 int read_ack;
 char buf = '0';
 PwmOut servo1(PA_0);
 int i = 0;
 
+Serial device(PA_9, PA_10);
+
 PwmOut motor1(PC_7);
-PwmOut motor1_inv(PA_9);
+PwmOut motor1_inv(PA_8); //変えた
 PwmOut motor2();
 
 //配列でパルス幅を管理
@@ -52,7 +54,7 @@ void servo_back();
 void servo_foward_test();
 void servo_back_test();
 void init();
-
+void get_data();
 
 
 
@@ -63,7 +65,7 @@ int main() {
     i2c.address(addr);
     while(1){
       press_button();
-      check_i2c();
+      get_data();
       wait_ms(50);
     }
 }
@@ -206,22 +208,25 @@ void init(){
   servo1.pulsewidth_us(servo_pulses[0]);
 }
 
+void get_data(){
+  printf("受信側\r\n");
+  data = device.getc();
+  pc.putc(data);
+}
+
 
 //*************実際の処理用関数***************************
 void press_button(){
-  int i = i2c.receive();
-  read_ack = i2c.read(data, 16); //読み取り部
-  printf("%d\r\n", read_ack);
-  if (data[0]=='1') cycle();
-  else if (data[1] == '1')  cross();
-  else if (data[2] == '1')  triangle();
-  else if (data[3] == '1')  square();
-  else if (data[4] == '1')  right();
-  else if (data[5] == '1')  down();
-  else if (data[6] == '1')  up();
-  else if (data[7] == '1')  left();
-  else if (data[8] == '1')  r_1();
-  else if (data[9] == '1')  l_1();
+  if (data=='A') cycle();
+  else if (data == 'B')  cross();
+  else if (data == 'C')  triangle();
+  else if (data == 'D')  square();
+  else if (data == 'E')  right();
+  else if (data == 'F')  down();
+  else if (data == 'G')  up();
+  else if (data == 'H')  left();
+  else if (data == 'I')  r_1();
+  else if (data == 'J')  l_1();
 }
 
 

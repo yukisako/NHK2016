@@ -23,8 +23,10 @@ char buf = '0';
 PwmOut servo1(PA_0);
 int i = 0;
 
+Serial device(PA_9, PA_10);
+
 PwmOut motor1(PC_7);
-PwmOut motor1_inv(PA_9);
+PwmOut motor1_inv(PA_8); //ここ変えた
 PwmOut motor2();
 
 //配列でパルス幅を管理
@@ -54,17 +56,18 @@ void servo_back();
 void servo_foward_test();
 void servo_back_test();
 void init();
-
+void send_data_test();
 
 
 
 
 int main() {
-    motor1.period_us(50);
-    motor1_inv.period_us(50);
+    //motor1.period_us(50);
+    //motor1_inv.period_us(50);
     while(1){
       press_button();
-      check_i2c();
+      //check_i2c();
+      //send_data_test();
       wait_ms(50);
     }
 }
@@ -79,55 +82,65 @@ int main() {
 void cycle(){
   pc.printf("丸ボタンが押されています．\r\n");
   pc.printf("ファンを右に回転させます．\r\n");
+  device.putc('A');
 }
 
 void triangle(){
   pc.printf("三角ボタンが押されています．\r\n");
   pc.printf("ファンを上に移動させます．\r\n");
+  device.putc('B');
 }
 
 void cross(){
   pc.printf("バツボタンが押されています．\r\n");
   pc.printf("ファンを下に移動させます．\r\n");
+  device.putc('C');
 }
 
 void square(){
   pc.printf("四角ボタンが押されています．\r\n");
   pc.printf("ファンを左に回転させます．\r\n");
+  device.putc('D');
 }
 
 void up(){
   //ロボット前進
   pc.printf("十字キーの上ボタンが押されています．\r\n");
   pc.printf("ロボットを前方向に並進運動させます．\r\n");
+  device.putc('E');
 }
 
 void down(){
   //ロボット後退
   pc.printf("十字キーの下ボタンが押されています．\r\n");
   pc.printf("ロボットを後ろ方向に並進運動させます．\r\n");
+  device.putc('F');
 }
 
 void left(){
   //ロボット回転(左)
   pc.printf("十字キーの左ボタンが押されています．\r\n");
   pc.printf("ロボットを左方向に並進運動させます．\r\n");
+  device.putc('G');
 }
 
 void right(){
   //ロボット回転(右)
   pc.printf("十字キーの右ボタンが押されています．\r\n");
   pc.printf("ロボットを右方向に並進運動させます．\r\n");
+  device.putc('H');
 }
 
 void r_1(){
   pc.printf("R1ボタンが押されています．\r\n");
   pc.printf("モータを動かします\r\n");
+  device.putc('I');
   check_motor();
 }
 
 void l_1(){
   pc.printf("L1ボタンが押されています．\r\n");
+  device.putc('J');
 }
 
 ////************確認用関数*******************************
@@ -205,6 +218,11 @@ void init(){
   pc.printf("初期位置に戻します\r\n");
   servo_pulses[0] = 1500;
   servo1.pulsewidth_us(servo_pulses[0]);
+}
+
+void send_data_test(){
+    printf("送信側\r\n");
+    device.putc('A');
 }
 
 
