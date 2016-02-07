@@ -39,7 +39,6 @@ const int addr = 0x08;  //ArduinoとI2C通信するためのアドレス
 
 char data[16] = "zzzzzzzzzzzzzzz";
 int read_ack;
-char buf = '0';
 
 int i = 0;
 
@@ -48,8 +47,11 @@ int i = 0;
 int servo_pulses[10] = {1500,1500,1500,1500,1500};
 
 
-//プロトタイプ宣言
-void check_motor();
+
+
+//*****プロトタイプ宣言*******
+
+//ボタンを押された時の関数
 void cycle();
 void triangle();
 void cross();
@@ -60,25 +62,26 @@ void left();
 void right();
 void r_1();
 void l_1();
+
+//確認用関数
 void check_i2c();
 void servo_test();
-void init();
 void send_data_test();
 
-//*****プロトタイプ宣言*******
+//実際に処理が書かれた関数
+void init();
 void press_button();
 void move_servo(PwmOut servo, int *start, int end);
 void rotate(int start, int end);
+
 //*****プロトタイプ宣言終わり**
 
 
 
 int main() {
-    //motor1.period_us(50);
-    //motor1_inv.period_us(50);
     while(1){
-      //press_button();
-      init();
+      press_button();
+      //init();
       //check_i2c();
       //send_data_test();
       wait_ms(50);
@@ -175,17 +178,13 @@ void servo_test(){
   down();
 }
 
-//************確認用関数終わり****************************
-
-
-
-
-
-
 void send_data_test(){
     printf("送信側\r\n");
     device.putc('A');
 }
+//************確認用関数終わり****************************
+
+
 
 
 //*************実際の処理用関数***************************
@@ -205,9 +204,10 @@ void press_button(){
   else if (data[9] == '1')  l_1();
 }
 
+//サーボの角度を初期位置に戻す関数
 void init(){
   pc.printf("初期位置に戻します\r\n");
-  for (int i=0; i<5; i++){
+  for (int i=0; i<3; i++){
     servo_pulses[i] = 1500;
   }
   servo_right.pulsewidth_us(1500);
@@ -220,6 +220,7 @@ void init(){
   */
 }
 
+//足回りの3つのサーボを動かす関数
 void rotate(int start, int end){
     int p;
     if (start < end ){
@@ -242,6 +243,7 @@ void rotate(int start, int end){
     }
 }
 
+//一個のサーボを動かす関数
 void move_servo(PwmOut servo, int *start, int end){
     int p;
     if (*start < end ){
