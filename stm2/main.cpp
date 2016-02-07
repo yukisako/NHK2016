@@ -1,3 +1,10 @@
+/***************
+二個目の基板
+スレーブ役
+***************/
+
+
+
 #include "mbed.h"
 #include "QEI.h"
 #include <cstdlib>

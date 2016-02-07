@@ -1,3 +1,8 @@
+/***************
+三個目の基板
+スレーブ役
+***************/
+
 #include "mbed.h"
 #include "QEI.h"
 #include <cstdlib>
@@ -5,6 +10,8 @@
 #include <map>
 
 using namespace std;
+
+
 
 Serial pc(USBTX, USBRX);
 //Use X4 encoding.

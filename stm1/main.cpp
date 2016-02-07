@@ -1,3 +1,8 @@
+/***************
+一個目の基板
+こいつがマスターの役をして，コントローラの情報とかを他のSTMに.
+***************/
+
 #include "mbed.h"
 #include "QEI.h"
 #include <cstdlib>
@@ -7,9 +12,6 @@
 using namespace std;
 
 Serial pc(USBTX, USBRX);
-//Use X4 encoding.
-//QEI wheel(p29, p30, NC, 624, QEI::X4_ENCODING);
-//Use X2 encoding by default.
 QEI wheel (PA_1, PA_4, NC, 500);
 
 I2C i2c( PB_3 , PB_10 );  //通信用のピン設定(SCA,SCL)
