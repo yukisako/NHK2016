@@ -1,6 +1,6 @@
 /***************
 三個目の基板
-スレーブ役
+ちゃいよーとかを上下させる．
 ***************/
 
 
@@ -24,9 +24,12 @@ Serial pc(USBTX, USBRX);
 Serial device(PA_9, PA_10);
 
 //ロータリーエンコーダ(今回は2層のエンコーダなので第三引数は考えなくて良い)
+
 QEI enc_right(PA_0, PA_1, NC, 500);
+/*
 QEI enc_left(PA_2, PA_3, NC, 500);
 QEI enc_back(PB_14, PB_13, NC, 500);
+*/
 
 //モータ
 PwmOut motor_right(PC_9);
@@ -45,6 +48,12 @@ PwmOut motor_back_inv(PC_7);
 I2CSlave i2c( PB_3 , PB_10 );  //通信用のピン設定(SCA,SCL)
 const int addr = 0x70;
 int read_ack;
+
+void check_i2c(){
+  pc.printf("%s",data);
+  printf("\r\n");
+} 
+
 */
 char data = 'z';
 
@@ -95,19 +104,23 @@ void r_1();
 void l_1();
 
 //確認用関数
-void check_i2c();
-
+void check_motor(PwmOut motor, PwmOut motor_inv);
 void send_data_test();
 
 //実際に処理が書かれた関数
 void init();
 void press_button();
 void motor_setup();
-
+void get_data();
+void motor_foward();
+void motor_backward();
+void motor_stop();
 //*****プロトタイプ宣言終わり**
 
 
 int main() {
+
+  wait(2);
   motor_setup();
     while(1){
       get_data();
@@ -182,7 +195,7 @@ void right(){
 void r_1(){
   pc.printf("R1ボタンが押されています．\r\n");
   pc.printf("モータを動かします\r\n");
-  check_motor();
+  check_motor(motor_right, motor_right_inv);
 }
 
 void l_1(){
@@ -191,14 +204,12 @@ void l_1(){
 
 ////************確認用関数*******************************
 void check_qei(){
-  int pulse = wheel.getPulses();
+  int pulse = enc_right.getPulses();
   pc.printf("Pulses is: %d\r\n", pulse);
 }
 
-void check_i2c(){
-  pc.printf("%s",data);
-  printf("\r\n");
-} 
+
+
 
 void check_motor(PwmOut motor, PwmOut motor_inv){
   printf("モーターを動かします\r\n");
@@ -223,21 +234,16 @@ void check_motor(PwmOut motor, PwmOut motor_inv){
 
 //************確認用関数終わり****************************
 
-void init(){
-  pc.printf("初期位置に戻します\r\n");
-  servo_pulses[0] = 1500;
-  servo1.pulsewidth_us(servo_pulses[0]);
-}
+
+//*************実際の処理用関数***************************
 
 void get_data(){
   data = 'z';
-  printf("受信側\r\n");
+  pc.printf("受信待機中\r\n");
   data = device.getc();
   pc.putc(data);
 }
 
-
-//*************実際の処理用関数***************************
 void press_button(){
   if (data=='A') cycle();
   else if (data == 'B')  cross();

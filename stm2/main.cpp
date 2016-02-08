@@ -5,8 +5,6 @@
 この基板は，足回りのモータ3つとそれに付随しているエンコーダを制御している．
 ***************/
 
-
-
 #include "mbed.h"
 #include "QEI.h"
 #include <cstdlib>
@@ -32,6 +30,7 @@ QEI enc_right(PA_0, PA_1, NC, 500);
 QEI enc_left(PA_2, PA_3, NC, 500);
 QEI enc_back(PB_14, PB_13, NC, 500);
 */
+
 //モータ
 PwmOut motor_right(PC_9);
 PwmOut motor_right_inv(PC_8);
@@ -105,7 +104,6 @@ void r_1();
 void l_1();
 
 //確認用関数
-void check_i2c();
 void check_motor(PwmOut motor, PwmOut motor_inv);
 void send_data_test();
 
@@ -123,7 +121,7 @@ void motor_stop();
 int main() {
 
   wait(2);
-  //motor_setup();
+  motor_setup();
     while(1){
       get_data();
       press_button();
@@ -241,7 +239,7 @@ void check_motor(PwmOut motor, PwmOut motor_inv){
 
 void get_data(){
   data = 'z';
-  pc.printf("受信側\r\n");
+  pc.printf("受信待機中\r\n");
   data = device.getc();
   pc.putc(data);
 }
@@ -299,5 +297,4 @@ void motor_stop(){
   motor_left_inv = 0.0f;
   motor_back = 0.0f;
   motor_back_inv = 0.0f;
-
 }

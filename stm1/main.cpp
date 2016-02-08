@@ -85,7 +85,6 @@ int main() {
     while(1){
       press_button();
       //init();
-      check_i2c();
       //send_data_test();
       wait_ms(50);
     }
@@ -166,12 +165,14 @@ void r_1(){
 
 void l_1(){
   pc.printf("L1ボタンが押されています．\r\n");
+  check_i2c();
   device.putc('J');
 }
 
 ////************確認用関数*******************************
 void check_i2c(){
   pc.printf("%s",data);
+  printf("Readは%d\r\n", read_ack);
   printf("\r\n");
 } 
 
@@ -199,6 +200,7 @@ void send_data_test(){
 void press_button(){
   read_ack = i2c.read((addr<<1)+1, data, 16);
   printf("Readは%d\r\n", read_ack);
+  pc.printf("%s",data);
   if (data[0]=='1') cycle();
   else if (data[1] == '1')  cross();
   else if (data[2] == '1')  triangle();
