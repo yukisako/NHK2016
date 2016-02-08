@@ -11,13 +11,16 @@
 
 using namespace std;
 
-Serial pc(USBTX, USBRX);
+
 //*****ピン設定******************
+
+//PCとシリアル通信する為のピン
+Serial pc(USBTX, USBRX);
 
 //ArduinoとI2C通信用のピン設定(SCA,SCL)
 I2C i2c( PB_3 , PB_10 );  
 
-//他のSTMとシリアル通信する為のピン
+//子のSTMとシリアル通信する為のピン
 Serial device(PA_9, PA_10);
 
 //サーボ用のピン(5個)
@@ -37,7 +40,7 @@ DigitalOut solenoid4(PC_1);
 
 const int addr = 0x08;  //ArduinoとI2C通信するためのアドレス
 
-char data[16] = "zzzzzzzzzzzzzzz";
+char data[17] = "zzzzzzzzzzzzzzzz";
 int read_ack;
 
 int i = 0;
@@ -82,7 +85,7 @@ int main() {
     while(1){
       press_button();
       //init();
-      //check_i2c();
+      check_i2c();
       //send_data_test();
       wait_ms(50);
     }
@@ -120,35 +123,39 @@ void square(){
 }
 
 void up(){
-  //ロボット前進
+  //ロボット前に移動
   pc.printf("十字キーの上ボタンが押されています．\r\n");
   pc.printf("ロボットを前方向に並進運動させます．\r\n");
-  device.putc('E');
   rotate(servo_pulses[0], 1500);
+  device.putc('E');
+  wait(1);
 }
 
 void down(){
-  //ロボット後退
+  //ロボット後ろに移動
   pc.printf("十字キーの下ボタンが押されています．\r\n");
   pc.printf("ロボットを後ろ方向に並進運動させます．\r\n");
   device.putc('F');
   rotate(servo_pulses[0], 1500);
+  wait(1);
 }
 
 void left(){
-  //ロボット回転(左)
+  //ロボット左に移動
   pc.printf("十字キーの左ボタンが押されています．\r\n");
   pc.printf("ロボットを左方向に並進運動させます．\r\n");
   device.putc('G');
   rotate(servo_pulses[0], 2033);
+  wait(1);
 }
 
 void right(){
-  //ロボット回転(右)
+  //ロボット右に移動
   pc.printf("十字キーの右ボタンが押されています．\r\n");
   pc.printf("ロボットを右方向に並進運動させます．\r\n");
   rotate(servo_pulses[0], 967);
   device.putc('H');
+  wait(1);
 }
 
 void r_1(){

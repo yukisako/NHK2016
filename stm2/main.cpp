@@ -26,10 +26,12 @@ Serial pc(USBTX, USBRX);
 Serial device(PA_9, PA_10);
 
 //ロータリーエンコーダ(今回は2層のエンコーダなので第三引数は考えなくて良い)
+
 QEI enc_right(PA_0, PA_1, NC, 500);
+/*
 QEI enc_left(PA_2, PA_3, NC, 500);
 QEI enc_back(PB_14, PB_13, NC, 500);
-
+*/
 //モータ
 PwmOut motor_right(PC_9);
 PwmOut motor_right_inv(PC_8);
@@ -119,7 +121,9 @@ void motor_stop();
 
 
 int main() {
-  motor_setup();
+
+  wait(2);
+  //motor_setup();
     while(1){
       get_data();
       press_button();
@@ -237,7 +241,7 @@ void check_motor(PwmOut motor, PwmOut motor_inv){
 
 void get_data(){
   data = 'z';
-  printf("受信側\r\n");
+  pc.printf("受信側\r\n");
   data = device.getc();
   pc.putc(data);
 }
