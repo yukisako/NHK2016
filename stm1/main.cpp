@@ -18,7 +18,7 @@ using namespace std;
 Serial pc(USBTX, USBRX);
 
 //ArduinoとI2C通信用のピン設定(SCA,SCL)
-I2C i2c( PB_3 , PB_10 );  
+I2C i2c( PB_9 , PB_8 );  
 
 //子のSTMとシリアル通信する為のピン
 Serial device(PA_9, PA_10);

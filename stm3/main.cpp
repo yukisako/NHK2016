@@ -25,11 +25,12 @@ Serial device(PA_9, PA_10);
 
 //ロータリーエンコーダ(今回は2層のエンコーダなので第三引数は考えなくて良い)
 
-QEI enc_right(PA_0, PA_1, NC, 500);
+QEI enc_side_right(PA_0, PA_1, NC, 500);
 /*
-QEI enc_left(PA_2, PA_3, NC, 500);
-QEI enc_back(PB_14, PB_13, NC, 500);
+QEI enc_side_left(PA_2, PA_3, NC, 500);
+QEI enc_arm(PB_14, PB_13, NC, 500);
 */
+
 
 //モータ
 PwmOut motor_right(PC_9);
@@ -123,8 +124,11 @@ int main() {
   wait(2);
   motor_setup();
     while(1){
+      printf("OK\r\n");
+      /*
       get_data();
       press_button();
+      */
       wait_ms(50);
     }
 }
@@ -156,41 +160,6 @@ void square(){
   pc.printf("ファンを左に回転させます．\r\n");
 }
 
-void up(){
-  //ロボット前に移動
-  pc.printf("十字キーの上ボタンが押されています．\r\n");
-  pc.printf("ロボットを前方向に並進運動させます．\r\n");
-  motor_foward();
-  wait(1);
-  motor_stop();
-}
-
-void down(){
-  //ロボット後ろに移動
-  pc.printf("十字キーの下ボタンが押されています．\r\n");
-  pc.printf("ロボットを後ろ方向に並進運動させます．\r\n");
-  motor_backward();
-  wait(1);
-  motor_stop();
-}
-
-void left(){
-  //ロボット左に移動
-  pc.printf("十字キーの左ボタンが押されています．\r\n");
-  pc.printf("ロボットを左方向に並進運動させます．\r\n");
-  motor_foward();
-  wait(1);
-  motor_stop();
-}
-
-void right(){
-  //ロボット右に移動
-  pc.printf("十字キーの右ボタンが押されています．\r\n");
-  pc.printf("ロボットを右方向に並進運動させます．\r\n");
-  motor_foward();
-  wait(1);
-  motor_stop();
-}
 
 void r_1(){
   pc.printf("R1ボタンが押されています．\r\n");
@@ -203,17 +172,17 @@ void l_1(){
 }
 
 ////************確認用関数*******************************
+/*
 void check_qei(){
   int pulse = enc_right.getPulses();
   pc.printf("Pulses is: %d\r\n", pulse);
 }
-
+*/
 
 
 
 void check_motor(PwmOut motor, PwmOut motor_inv){
   printf("モーターを動かします\r\n");
-
   //RS-540は10Vくらいかけないと動かない...
   motor = 0.9f;
   motor_inv = 0.0f;
@@ -249,12 +218,14 @@ void press_button(){
   else if (data == 'B')  cross();
   else if (data == 'C')  triangle();
   else if (data == 'D')  square();
+  /*
   else if (data == 'E')  right();
   else if (data == 'F')  down();
   else if (data == 'G')  up();
   else if (data == 'H')  left();
   else if (data == 'I')  r_1();
   else if (data == 'J')  l_1();
+  */
 }
 
 //PWM周波数を設定
